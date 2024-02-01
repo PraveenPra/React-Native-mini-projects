@@ -57,12 +57,17 @@ else  setCurrentIndex(prev=>prev+1);
 
     <Text style={styles.desc}>{data.desc}</Text>
     </View>
+
+    <View style={styles.stepIndicatorContainer}>
+     {steps.map((step,index)=><View style={[styles.stepsIndicator,{backgroundColor:index === currentIndex ? "red":'gray'}]}/>
+)}
+    </View>
     <Pressable onPress={handleContinue} style={styles.button}>
       <Text style={styles.buttonText}>Continue</Text>
     </Pressable>
 
     <Pressable onPress={handleSkip} style={{width:'100%'}}>
-    <Text style={{color:'orange',fontSize:16,fontWeight:"600",textAlign:'right'}} >I'm too hungry for this</Text>
+    <Text style={styles.skipText} >I'm too hungry for this</Text>
     </Pressable>
     </View>
     );
@@ -86,8 +91,9 @@ fontWeight:"400",
 fontSize:20
   },
   button:{
-    backgroundColor:'orange',
-    padding:10,
+    backgroundColor:'#fe6e49',
+    paddingVertical:10,
+    paddingHorizontal:40,
     borderRadius:50,
     marginVertical:40,
     alignSelf:'center'
@@ -96,5 +102,18 @@ fontSize:20
     color:'white',
     fontWeight:'bold',
     fontSize:20
-  }
+  },
+  skipText:{color:'#fe6e49',fontSize:16,fontWeight:"600",textAlign:'right'},
+
+  //steps
+  stepIndicatorContainer:{
+    flexDirection:'row',
+    gap:8
+  },
+  stepsIndicator:{
+    flex:1,
+    height:5,
+    backgroundColor:'grey',
+    borderRadius:10,
+    }
 });
