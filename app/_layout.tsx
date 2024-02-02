@@ -3,6 +3,7 @@ import {  useFonts, Inter_900Black } from '@expo-google-fonts/inter';
 import {AmaticSC_400Regular,AmaticSC_700Bold} from '@expo-google-fonts/amatic-sc'
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 
 // Keep the splash screen visible while we fetch resources
@@ -25,13 +26,13 @@ const RootLayout = () => {
       if (!fontsLoaded && !fontError) {
         return null;
       }
-  return (
+  return (<GestureHandlerRootView style={{ flex: 1 }}>
     <Stack screenOptions={{
         // headerStyle:{backgroundColor:'black'}
     }}>
         <Stack.Screen name='index' options={{title:"Devember"}}/>
         </Stack>
-  );
+        </GestureHandlerRootView>);
 };
 
 export default RootLayout;

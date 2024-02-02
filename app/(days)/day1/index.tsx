@@ -2,6 +2,7 @@
 import { Stack, router } from 'expo-router';
 import * as React from 'react';
 import { Text, View, StyleSheet, Image, Pressable } from 'react-native';
+import { Directions, Gesture, GestureDetector } from 'react-native-gesture-handler';
 
 
 const steps = [
@@ -29,17 +30,42 @@ const Day1 = () => {
   const data = steps[currentIndex]
 
   const handleContinue = ()=>{
+const lastScreen = currentIndex >= steps.length -1;
 
-    if(currentIndex >= steps.length -1)
+    if(lastScreen)
     handleSkip()
 else  setCurrentIndex(prev=>prev+1);
 
   }
 
+  const handleBack = ()=>{
+    const firstScreen = currentIndex === 0;
+        if(firstScreen)
+        handleSkip();
+      else setCurrentIndex(prev=>prev-1);
+      }
+
   const handleSkip = ()=>{
     router.back()
   }
-  return (
+
+
+  //gestures
+  const flingForw = Gesture.Fling().direction( Directions.LEFT)
+  .onEnd((event)=>{
+    console.log("flinglft")
+    handleContinue()
+})
+
+const flingBack = Gesture.Fling().direction( Directions.RIGHT)
+  .onEnd((event)=>{
+    console.log("flingrgt")
+    handleBack()
+})
+
+const swipes = Gesture.Simultaneous(flingBack,flingForw)
+
+  return (<GestureDetector gesture={swipes}>
     <View style={styles.container}>
         <Stack.Screen options={{headerTitle:'Day 1'}}/>
       <View style={{alignItems:'center',width:'100%'}}>
@@ -59,7 +85,7 @@ else  setCurrentIndex(prev=>prev+1);
     </View>
 
     <View style={styles.stepIndicatorContainer}>
-     {steps.map((step,index)=><View style={[styles.stepsIndicator,{backgroundColor:index === currentIndex ? "red":'gray'}]}/>
+     {steps.map((step,index)=><View key={index} style={[styles.stepsIndicator,{backgroundColor:index === currentIndex ? "red":'gray'}]}/>
 )}
     </View>
     <Pressable onPress={handleContinue} style={styles.button}>
@@ -70,7 +96,7 @@ else  setCurrentIndex(prev=>prev+1);
     <Text style={styles.skipText} >I'm too hungry for this</Text>
     </Pressable>
     </View>
-    );
+    </GestureDetector> );
 };
 
 export default Day1;
