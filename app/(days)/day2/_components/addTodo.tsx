@@ -1,7 +1,7 @@
 import { View ,TextInput,StyleSheet} from "react-native";
 import { FontAwesome5 } from '@expo/vector-icons';
 import { useState } from "react";
-import { Todo } from "../../app/(days)/day2";
+import { Todo } from "..";
 
 type AddTodo = {
     addTo:(newTask:Todo)=>void;

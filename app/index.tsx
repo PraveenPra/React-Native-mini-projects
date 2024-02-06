@@ -3,7 +3,7 @@ import { FlatList, StyleSheet, Text, View } from 'react-native';
 import DayListItem from './../scr/components/core/dayListItem';
 
 
-const days = [...Array(24)].map((d, i) => i + 1)
+const days = [...Array(3)].map((d, i) => i + 1)
 
 export default function HomeScreen() {
 

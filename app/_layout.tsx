@@ -30,7 +30,7 @@ const RootLayout = () => {
     <Stack screenOptions={{
         // headerStyle:{backgroundColor:'black'}
     }}>
-        <Stack.Screen name='index' options={{title:"Devember"}}/>
+        <Stack.Screen name='index' options={{title:"Mini Projects"}}/>
         </Stack>
         </GestureHandlerRootView>);
 };

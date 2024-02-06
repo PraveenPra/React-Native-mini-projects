@@ -1,6 +1,6 @@
 import { Pressable,Text,StyleSheet ,View} from "react-native";
 import { FontAwesome5 } from '@expo/vector-icons';
-import { Todo } from "../../app/(days)/day2";
+import { Todo } from "..";
 import { Swipeable } from "react-native-gesture-handler";
 
 
