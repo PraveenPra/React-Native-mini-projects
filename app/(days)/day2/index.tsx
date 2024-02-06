@@ -1,7 +1,7 @@
 import { Stack } from "expo-router";
 
 import { useState } from "react";
-import { View, StyleSheet, FlatList, Text, Pressable, TextInput, KeyboardAvoidingView, SafeAreaView, Platform } from "react-native";
+import { View, StyleSheet, FlatList, Text, Pressable, TextInput, KeyboardAvoidingView, SafeAreaView, Platform, Button } from "react-native";
 import AddTodo from "../../../scr/components/addTodo";
 import TodoListItem from "../../../scr/components/todoListItem";
 import { produce } from "immer";
@@ -46,9 +46,17 @@ const data = [
 const TodoScreen = () => {
     const [tasks, setTasks] = useState<Todo[]>(data)
     const [searchQuery, setSearchQuery] = useState<string>('')
+    const [filterTab, setFilterTab] = useState<'All'|'InProgress'|'Completed'>('All')
 
 
     const filteredTodos = tasks.filter(t => {
+
+        if(filterTab === 'InProgress' && t.isComplete)
+        return false;
+
+        if(filterTab === 'Completed' && !t.isComplete)
+        return false;
+
         if(!searchQuery){
             return tasks
         }
@@ -90,6 +98,12 @@ const TodoScreen = () => {
                 <TextInput placeholder="Search" style={{borderWidth:1,padding:2}} value={searchQuery}
                 onChangeText={(value)=>setSearchQuery(value)}/>
 
+            <View style={{flexDirection:'row',justifyContent:'space-around'}}>
+                <Button onPress={()=>setFilterTab('All')} title="All"/>
+                <Button onPress={()=>setFilterTab('InProgress')} title="InProgress"/>
+                <Button onPress={()=>setFilterTab('Completed')} title="Completed"/>
+               
+            </View>
             <FlatList
                 data={filteredTodos}
                 contentContainerStyle={{
