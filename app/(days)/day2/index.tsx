@@ -14,37 +14,47 @@ export type Todo={
 
 const data = [
     {
-        id:1,
-        title: 'ihdse esfij efwief wi f',
+        id: 1,
+        title: 'Finish reading that book you started',
+        isComplete: false
+    },
+    {
+        id: 2,
+        title: 'Call your friend to catch up',
+        isComplete: false
+    },
+    {
+        id: 3,
+        title: 'Write a gratitude journal entry',
         isComplete: true
     },
     {
-        id:2,
-        title: 'ihdse esfij efwief wi f',
+        id: 4,
+        title: 'Plan your meals for the upcoming week',
         isComplete: false
     },
     {
-        id:3,
-        title: 'ihdse esfij efwief wi f',
-        isComplete: false
-    },
-    {
-        id:4,
-        title: 'ihdse esfij efwief wi f',
+        id: 5,
+        title: 'Take a 30-minute walk in the evening',
         isComplete: true
-    },
-    {
-        id:5,
-        title: 'ihdse esfij efwief wi f',
-        isComplete: false
-    },
+    }
+    
 ]
 
 
 
 const TodoScreen = () => {
     const [tasks, setTasks] = useState<Todo[]>(data)
+    const [searchQuery, setSearchQuery] = useState<string>('')
 
+
+    const filteredTodos = tasks.filter(t => {
+        if(!searchQuery){
+            return tasks
+        }
+
+        return t.title.toLowerCase().trim().includes(searchQuery.toLowerCase().trim())
+    })
 
     function toggleComplete(i: number) {
         setTasks( (prev)=> {
@@ -71,10 +81,17 @@ const TodoScreen = () => {
         }}
         behavior={Platform.OS === 'ios'?'padding':'height'}
         keyboardVerticalOffset={Platform.OS === 'ios'? 100:100}>
-        <Stack.Screen options={{headerShown:false}} />
-            <SafeAreaView>
+        <Stack.Screen options={{title:'Todos',headerBackTitleVisible:false,
+    headerSearchBarOptions:{
+        // hideWhenScrolling:true
+    }}} />
+            <SafeAreaView edges={['bottom']} style={{flex:1}}>
+
+                <TextInput placeholder="Search" style={{borderWidth:1,padding:2}} value={searchQuery}
+                onChangeText={(value)=>setSearchQuery(value)}/>
+
             <FlatList
-                data={tasks}
+                data={filteredTodos}
                 contentContainerStyle={{
                     gap: 10,
                     marginVertical:20,
