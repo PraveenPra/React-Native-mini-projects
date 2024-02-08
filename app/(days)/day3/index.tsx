@@ -4,10 +4,10 @@ import { useState } from "react";
 import { View, StyleSheet, FlatList, Text, Pressable, TextInput, KeyboardAvoidingView, SafeAreaView, Platform, Button } from "react-native";
 import AddTodo from "./_components/addTodo";
 import TodoListItem from "./_components/todoListItem";
-import { produce } from "immer";
+import { useStore } from "./_components/store";
 
 export type Todo={
-    id:number,
+    id:number|string,
     title:string,
     isComplete:boolean
 }
@@ -64,13 +64,13 @@ const TodoScreen = () => {
         return t.title.toLowerCase().trim().includes(searchQuery.toLowerCase().trim())
     })
 
-    function toggleComplete(i: number) {
-        setTasks( (prev)=> {
-            let temp = [...prev];
-            temp[i].isComplete = !temp[i].isComplete;
-            return temp;
-        })
-    }
+    // function toggleComplete(i: number) {
+    //     setTasks( (prev)=> {
+    //         let temp = [...prev];
+    //         temp[i].isComplete = !temp[i].isComplete;
+    //         return temp;
+    //     })
+    // }
 
     function deleteTodo(i:number){
         // setTasks(prev => prev.filter((p,index)=> index !== i))
@@ -82,6 +82,11 @@ const TodoScreen = () => {
         })
     }
 
+    const todos = useStore((state) => state.todos)
+    const toggleComplete = useStore((state)=> state.toggleComplete)
+    const addTodo = useStore((state)=> state.addTodo)
+
+
     return (
         <KeyboardAvoidingView style={{
       flex:1,
@@ -89,7 +94,8 @@ const TodoScreen = () => {
         }}
         behavior={Platform.OS === 'ios'?'padding':'height'}
         keyboardVerticalOffset={Platform.OS === 'ios'? 100:100}>
-        <Stack.Screen options={{title:'Todos',headerBackTitleVisible:false,
+
+        <Stack.Screen options={{title:'Todos with zustand',headerBackTitleVisible:false,
     headerSearchBarOptions:{
         // hideWhenScrolling:true
     }}} />
@@ -105,7 +111,7 @@ const TodoScreen = () => {
                
             </View>
             <FlatList
-                data={filteredTodos}
+                data={todos}
                 contentContainerStyle={{
                     gap: 10,
                     marginVertical:20,
@@ -113,10 +119,10 @@ const TodoScreen = () => {
                 }}
                 keyExtractor={(item)=>item.id}
                 renderItem={({ item, index }) => (
-                 <TodoListItem task={item} onToggle={()=>toggleComplete(index)} onDelete={()=>deleteTodo(index)}/>
+                 <TodoListItem task={item} onToggle={()=>toggleComplete(item.id)} onDelete={()=>deleteTodo(index)}/>
                 )}
                 ListFooterComponent={
-                   <AddTodo addTo={(newTodo:Todo)=>setTasks(prev=>[...prev,newTodo])}/>
+                   <AddTodo addTo={addTodo}/>
                 }
             />
 

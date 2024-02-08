@@ -3,6 +3,8 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import { useState } from "react";
 import { Todo } from "..";
 
+// import { v4 as uuidv4 } from 'uuid';
+
 type AddTodo = {
     addTo:(newTask:Todo)=>void;
 }
@@ -18,7 +20,7 @@ const AddTodo = ({addTo}:AddTodo) => {
             if(!newTask){
                 return;
             }
-           addTo({title:newTask,isComplete:false})
+           addTo({id:new Date().toLocaleString(),title:newTask,isComplete:false})
         setNewTask('')}
         }/>
         
