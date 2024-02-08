@@ -49,20 +49,20 @@ const TodoScreen = () => {
     const [filterTab, setFilterTab] = useState<'All'|'InProgress'|'Completed'>('All')
 
 
-    const filteredTodos = tasks.filter(t => {
+    // const filteredTodos = tasks.filter(t => {
 
-        if(filterTab === 'InProgress' && t.isComplete)
-        return false;
+    //     if(filterTab === 'InProgress' && t.isComplete)
+    //     return false;
 
-        if(filterTab === 'Completed' && !t.isComplete)
-        return false;
+    //     if(filterTab === 'Completed' && !t.isComplete)
+    //     return false;
 
-        if(!searchQuery){
-            return tasks
-        }
+    //     if(!searchQuery){
+    //         return tasks
+    //     }
 
-        return t.title.toLowerCase().trim().includes(searchQuery.toLowerCase().trim())
-    })
+    //     return t.title.toLowerCase().trim().includes(searchQuery.toLowerCase().trim())
+    // })
 
     // function toggleComplete(i: number) {
     //     setTasks( (prev)=> {
@@ -82,9 +82,10 @@ const TodoScreen = () => {
         })
     }
 
-    const todos = useStore((state) => state.todos)
+  
     const toggleComplete = useStore((state)=> state.toggleComplete)
     const addTodo = useStore((state)=> state.addTodo)
+    const filteredTodos = useStore((state)=>state.filteredTodos(filterTab,searchQuery))
 
 
     return (
@@ -111,7 +112,7 @@ const TodoScreen = () => {
                
             </View>
             <FlatList
-                data={todos}
+                data={filteredTodos}
                 contentContainerStyle={{
                     gap: 10,
                     marginVertical:20,
